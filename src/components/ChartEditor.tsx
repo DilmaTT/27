@@ -382,7 +382,7 @@ export const ChartEditor = ({ isMobileMode = false, chart, onBackToCharts, onSav
       window.removeEventListener('mouseup', handleMouseUp);
       window.removeEventListener('touchmove', handleTouchMove);
       window.removeEventListener('touchend', handleMouseUp);
-    }
+    };
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
@@ -474,51 +474,41 @@ export const ChartEditor = ({ isMobileMode = false, chart, onBackToCharts, onSav
       
       {/* Group for dimension controls */}
       <div className={cn(
-        "flex items-center gap-4 flex-wrap", // Default desktop: flex-row, wrap
-        isMobileMode ? "flex-col items-start gap-2" : "" // Mobile: flex-col, align items to start, smaller gap
+        "flex items-center gap-4 flex-wrap", // Desktop: flex-row, wrap
+        isMobileMode ? "grid grid-cols-[auto_1fr] gap-x-2 gap-y-2 w-full" : "" // Mobile: grid layout
       )}>
-        <div className={cn(
-          "flex items-center gap-2", // Desktop default
-          isMobileMode && "grid grid-cols-[auto_1fr] gap-x-2" // Mobile grid layout
+        <Label htmlFor="canvasWidth" className={cn(
+          "text-right", // Desktop
+          isMobileMode && "text-left" // Mobile: align label to left within its grid cell
         )}>
-          <Label htmlFor="canvasWidth" className={cn(
-            "text-right", // Desktop
-            isMobileMode && "text-left" // Mobile: align label to left within its grid cell
-          )}>
-            Ширина
-          </Label>
-          <Input
-            id="canvasWidth"
-            type="number"
-            value={isNaN(canvasWidth) ? '' : canvasWidth}
-            onChange={(e) => handleDimensionChange(e.target.value, setCanvasWidth)}
-            onBlur={() => handleDimensionBlur(canvasWidth, setCanvasWidth)}
-            className="w-20 h-7"
-            min="100"
-            maxLength={4}
-          />
-        </div>
-        <div className={cn(
-          "flex items-center gap-2", // Desktop default
-          isMobileMode && "grid grid-cols-[auto_1fr] gap-x-2" // Mobile grid layout
+          Ширина
+        </Label>
+        <Input
+          id="canvasWidth"
+          type="number"
+          value={isNaN(canvasWidth) ? '' : canvasWidth}
+          onChange={(e) => handleDimensionChange(e.target.value, setCanvasWidth)}
+          onBlur={() => handleDimensionBlur(canvasWidth, setCanvasWidth)}
+          className="w-20 h-7"
+          min="100"
+          maxLength={4}
+        />
+        <Label htmlFor="canvasHeight" className={cn(
+          "text-right", // Desktop
+          isMobileMode && "text-left" // Mobile
         )}>
-          <Label htmlFor="canvasHeight" className={cn(
-            "text-right", // Desktop
-            isMobileMode && "text-left" // Mobile
-          )}>
-            Высота
-          </Label>
-          <Input
-            id="canvasHeight"
-            type="number"
-            value={isNaN(canvasHeight) ? '' : canvasHeight}
-            onChange={(e) => handleDimensionChange(e.target.value, setCanvasHeight)}
-            onBlur={() => handleDimensionBlur(canvasHeight, setCanvasHeight)}
-            className="w-20 h-7"
-            min="100"
-            maxLength={4}
-          />
-        </div>
+          Высота
+        </Label>
+        <Input
+          id="canvasHeight"
+          type="number"
+          value={isNaN(canvasHeight) ? '' : canvasHeight}
+          onChange={(e) => handleDimensionChange(e.target.value, setCanvasHeight)}
+          onBlur={() => handleDimensionBlur(canvasHeight, setCanvasHeight)}
+          className="w-20 h-7"
+          min="100"
+          maxLength={4}
+        />
       </div>
     </div>
   );
