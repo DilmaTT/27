@@ -57,6 +57,38 @@ export const ChartEditor = ({ isMobileMode = false, chart, onBackToCharts, onSav
     setCanvasHeight(chart.canvasHeight || 500);
   }, [chart]);
 
+  // Effect to clamp button positions and sizes when canvas dimensions change
+  useEffect(() => {
+    const minButtonSize = 5; // Minimum size for a button
+
+    setButtons(prevButtons => {
+      let changed = false;
+      const newButtons = prevButtons.map(button => {
+        let newX = button.x;
+        let newY = button.y;
+        let newWidth = button.width;
+        let newHeight = button.height;
+
+        // Clamp width and height first, ensuring they are at least minButtonSize
+        newWidth = Math.max(minButtonSize, Math.min(newWidth, canvasWidth));
+        newHeight = Math.max(minButtonSize, Math.min(newHeight, canvasHeight));
+
+        // Clamp x and y based on new width/height and canvas dimensions
+        newX = Math.max(0, Math.min(newX, canvasWidth - newWidth));
+        newY = Math.max(0, Math.min(newY, canvasHeight - newHeight));
+
+        if (newX !== button.x || newY !== button.y || newWidth !== button.width || newHeight !== button.height) {
+          changed = true;
+          return { ...button, x: newX, y: newY, width: newWidth, height: newHeight };
+        }
+        return button;
+      });
+
+      return changed ? newButtons : prevButtons;
+    });
+  }, [canvasWidth, canvasHeight]);
+
+
   const handleAddButton = () => {
     const newButton: ChartButton = {
       id: String(Date.now()),
